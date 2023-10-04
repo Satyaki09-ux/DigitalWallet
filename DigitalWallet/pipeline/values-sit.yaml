@@ -1,0 +1,66 @@
+env: sit
+replicaCount: 1
+replica:
+    maxcount: "1"
+    mincount: "1"
+secretclassprovider:
+  name: "sell-kv-secret"
+ScpName: "sell-kv-secret"
+k8s:
+  namespace: "ns-sell"
+app:
+  name: "digital-wallet"
+service:
+  port: "8442"
+metrics:
+  port: "9008"
+cpu:
+  target: "595m"
+  #This is 85% of the cpu limit set.
+memory:
+  target: "850Mi"
+  #This is 85% of the memory limit set.
+pv:
+  name: ""
+pvc:
+  name: ""
+  storage: 5Gi
+
+image:
+  repository: "lmapaz1acrdevshl01.azurecr.io/lmapaz1acrdevshl01/osa"
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+imagePullSecrets:
+  name: acr-auth
+
+#service:
+#  type: ClusterIP
+#  port: 80
+
+resources:
+  limits:
+    cpu: 700m
+    memory: 1000Mi
+  requests:
+    cpu: 150m
+    memory: 300Mi
+
+#autoscaling:
+#  enabled: false
+#  minReplicas: 1
+#  maxReplicas: 100
+#  targetCPUUtilizationPercentage: 80
+#  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+appProperties:
+  database:
+    name: digital_wallet
+    connectionPool:
+      minSize: 10
+      maxSize: 20

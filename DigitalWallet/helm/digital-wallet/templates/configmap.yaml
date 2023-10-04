@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.app.name }}-configmap
+data:
+  start.sh: |
+    #!/bin/sh
+    export BASIC_AUTH_USERNAME=$(cat /mnt/secrets-store/BASIC-AUTH-USERNAME)
+    export BASIC_AUTH_PASSWORD=$(cat /mnt/secrets-store/BASIC-AUTH-PASSWORD)
+    export SSL_KEY_STORE=/.keystore/digital.p12
+    export SSL_KEYSTORE_PASSWORD=$(cat /mnt/secrets-store/SSL-KEYSTORE-PASSWORD)
+    export SSL_KEY_ALIAS=digital
+    export EXTEND_EXPIRY_DAYS_MAX=120
+    export DIGITAL_WALLET_EXPIRY_DAYS=365
+    export DIGITAL_WALLET_OTP_EXPIRY_MIN=10
+    export DATASOURCE_HOST=$(cat /mnt/secrets-store/SELL-DW-DB-HOST)
+    export DATASOURCE_USERNAME=$(cat /mnt/secrets-store/SELL-DW-DB-USERNAME)
+    export DATASOURCE_PASSWORD=$(cat /mnt/secrets-store/SELL-DW-DB-PASSWORD)
+    export DB_NAME={{ .Values.appProperties.database.name }}
+    export CON_POOL_MIN_SIZE={{ .Values.appProperties.database.connectionPool.minSize }}
+    export CON_POOL_MAX_SIZE={{ .Values.appProperties.database.connectionPool.maxSize }}
+    export NOTIFICATION_SERVICE_ENDPOINT=http://notification-services.ns-sell.svc.cluster.local:5556/notification-services/notify/digital-wallet/{notificationType}
+    export DEFAULT_TIMEZONE=Asia/Dubai
+    export LOG_PATH=/opt/apps/sahla/sell/digital-wallet/logs
+    export EMPLOYEE_VALIDATION_URI=$(cat /mnt/secrets-store/SELL-DW-EMPLOYEE-VALIDATION-URI)
+    export EMPLOYEE_VALIDATION_USERID=$(cat /mnt/secrets-store/SELL-DW-EMPLOYEE-VALIDATION-USERID)
+    export EMPLOYEE_VALIDATION_PASSWORD=$(cat /mnt/secrets-store/SELL-DW-EMPLOYEE-VALIDATION-PASSWORD)
+    export OGLOBA_CARD_ENQUIRY_URI=$(cat /mnt/secrets-store/SELL-DW-OGLOBA-CARD-ENQUIRY-URI)
+    export OGLOBA_CARD_REDEMPTION_URI=$(cat /mnt/secrets-store/SELL-DW-OGLOBA-CARD-REDEMPTION-URI)
+    export OGLOBA_CARD_CONFIRMATION_URI=$(cat /mnt/secrets-store/SELL-DW-OGLOBA-CARD-CONFIRMATION-URI)
+    export OGLOBA_CARD_ACTIVATION_URI=$(cat /mnt/secrets-store/SELL-DW-OGLOBA-CARD-ACTIVATION-URI)
+    export APM_ENV={{ .Values.env }}
+    if [ "$APM_ENV" = "prod" ] 
+    then
+      java -Dlogging.path=$LOG_PATH -javaagent:/elastic-apm-agent.jar -Delastic.apm.service_name={{ .Values.app.name }} -Delastic.apm.server_urls=$(cat /mnt/secrets-store/ELASTIC-APM-URL) -Delastic.apm.secret_token=$(cat /mnt/secrets-store/ELASTIC-APM-TOKEN) -Delastic.apm.environment=SHUKRAN-PAY-PROD -Delastic.apm.application_packages=$(cat /mnt/secrets-store/SELL-DW-ELASTIC-APM-APP-PACKAGE) -jar /digital-wallet.jar
+    elif [ "$APM_ENV" = "ppd" ]
+    then
+      java -Dlogging.path=$LOG_PATH -javaagent:/elastic-apm-agent.jar -Delastic.apm.service_name={{ .Values.app.name }} -Delastic.apm.server_urls=$(cat /mnt/secrets-store/ELASTIC-APM-URL) -Delastic.apm.secret_token=$(cat /mnt/secrets-store/ELASTIC-APM-TOKEN) -Delastic.apm.environment=SHUKRAN-PAY-PT -Delastic.apm.application_packages=$(cat /mnt/secrets-store/SELL-DW-ELASTIC-APM-APP-PACKAGE) -jar /digital-wallet.jar
+    else
+      java -Dlogging.path=$LOG_PATH -jar /digital-wallet.jar
+    fi
+    # java -Dlogging.path=$LOG_PATH -jar /digital-wallet.jar

@@ -1,0 +1,13 @@
+variables:
+  helmfrom: $(Build.SourcesDirectory)/DigitalWallet/helm
+  mavenPomFile: ./DigitalWallet/pom.xml
+  sonarProjectKey: SahlaSell-RefundDigitization_SahlaSell-Digital-Wallet
+  sonarProjectName: sahla-sell-digital-wallet
+  pathDockerfile: ./DigitalWallet/Dockerfile.build
+  k8sNamespace: ns-sell
+  projectName: digital-wallet
+  veracodeAppProfile: Sahla Sell DevSecOps
+  jarFilepath: ./DigitalWallet/target/digital-wallet-1.0.jar
+  sandboxName: digital-wallet
+  valuesPath: $(Build.SourcesDirectory)/$(Build.Repository.Name)/DigitalWallet
+  project: SahlaSell-RefundDigitization

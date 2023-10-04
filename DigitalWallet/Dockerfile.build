@@ -1,0 +1,18 @@
+FROM openjdk:8-jdk-alpine
+VOLUME /tmp
+
+RUN sh -c 'mkdir -p /.keystore'
+COPY digital.p12 /.keystore
+
+# copy elastic-apm-agent-java jar
+ENV ELASTIC_APM_VERSION "1.33.0"
+RUN wget -O /elastic-apm-agent.jar https://search.maven.org/remotecontent?filepath=co/elastic/apm/elastic-apm-agent/$ELASTIC_APM_VERSION/elastic-apm-agent-$ELASTIC_APM_VERSION.jar
+
+# copy jar file
+COPY ./DigitalWallet/target/digital-wallet-1.0.jar /digital-wallet.jar
+
+# set entry point, now this script will set the environment and start the app
+ENTRYPOINT /script/start.sh
+
+EXPOSE 8442/tcp
+EXPOSE 9008/tcp

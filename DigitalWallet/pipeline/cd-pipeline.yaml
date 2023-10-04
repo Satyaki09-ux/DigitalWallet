@@ -1,0 +1,32 @@
+trigger: none
+pr: none
+# define variables: registryName, registryLogin and registryPassword in the Azure pipeline UI definition
+
+variables:
+  - template: variables.yaml
+  - template: vars/java-spring-boot/cd-vars-dev.yaml@devops
+  - template: vars/java-spring-boot/cd-vars-uat01.yaml@devops
+  - template: vars/java-spring-boot/cd-vars-sit.yaml@devops
+  - template: vars/java-spring-boot/cd-vars-uat.yaml@devops
+  - template: vars/java-spring-boot/cd-vars-ppd.yaml@devops
+  - template: vars/java-spring-boot/cd-vars-prod.yaml@devops
+
+
+resources:
+  pipelines:
+    - pipeline: ci-pipeline
+      source: "digital-wallet-ci"
+      trigger:
+        enabled: false
+
+  repositories:
+    - repository: devops
+      type: git
+      name: AzureDevOps-Shared-Library/azuredevops-shared-library
+    - repository: artifacts
+      type: git
+      name: Sahla-Cloud-Migration/DevOps-Artifacts
+
+
+stages:
+  - template: java-spring-boot/stages.yaml@devops

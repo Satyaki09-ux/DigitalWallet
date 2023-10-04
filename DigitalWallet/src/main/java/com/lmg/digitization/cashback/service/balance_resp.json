@@ -1,0 +1,157 @@
+{
+    "cashback": [
+        {
+            "cashback_id": "17783217449d466db362b",
+            "cashback_balance": 5.00,
+            "currency": "AED",
+            "version": "1",
+            "concept": "1",
+            "references": [
+                {
+                    "cashback_reference_id": "b6dc0c2fa0f049e088a11",
+                    "expiration_date": "2022-10-28",
+                    "amount": 5.00,
+                    "redeemable_concept_code": "1"
+                }
+            ]
+        },
+        {
+            "cashback_id": "17783217449d466db362b",
+            "cashback_balance": 7.45,
+            "currency": "AED",
+            "version": "1",
+            "concept": "2",
+            "references": [
+                {
+                    "cashback_reference_id": "f2a83c152e36431d86430",
+                    "expiration_date": "2022-10-28",
+                    "amount": 7.45,
+                    "redeemable_concept_code": "2"
+                }
+            ]
+        },
+        {
+            "cashback_id": "17783217449d466db362b",
+            "cashback_balance": 9.90,
+            "currency": "AED",
+            "version": "1",
+            "concept": "4",
+            "references": [
+                {
+                    "cashback_reference_id": "1ae03080f63a4c38aedb4",
+                    "expiration_date": "2022-10-27",
+                    "amount": 9.90,
+                    "redeemable_concept_code": "4"
+                }
+            ]
+        },
+        {
+            "cashback_id": "17783217449d466db362b",
+            "cashback_balance": 12.46,
+            "currency": "AED",
+            "version": "1",
+            "concept": "6",
+            "references": [
+                {
+                    "cashback_reference_id": "ec37cf4540bc40068dace",
+                    "expiration_date": "2022-10-26",
+                    "amount": 3.66,
+                    "redeemable_concept_code": "6"
+                },
+                {
+                    "cashback_reference_id": "4fa28136356349b6b6fb3",
+                    "expiration_date": "2022-10-26",
+                    "amount": 8.80,
+                    "redeemable_concept_code": "6"
+                }
+            ]
+        },
+        {
+            "cashback_id": "17783217449d466db362b",
+            "cashback_balance": 31.00,
+            "currency": "AED",
+            "version": "1",
+            "concept": "29",
+            "references": [
+                {
+                    "cashback_reference_id": "c0a74a477b124fe2aabee",
+                    "expiration_date": "2022-10-21",
+                    "amount": 15.50,
+                    "redeemable_concept_code": "29"
+                },
+                {
+                    "cashback_reference_id": "7703509437d9467f907e0",
+                    "expiration_date": "2022-10-27",
+                    "amount": 10.00,
+                    "redeemable_concept_code": "29"
+                },
+                {
+                    "cashback_reference_id": "8299991c4a654b348f618",
+                    "expiration_date": "2022-10-29",
+                    "amount": 5.50,
+                    "redeemable_concept_code": "29"
+                }
+            ]
+        },
+        {
+            "cashback_id": "17783217449d466db362b",
+            "cashback_balance": 8.87,
+            "currency": "AED",
+            "version": "1",
+            "concept": "21",
+            "references": [
+                {
+                    "cashback_reference_id": "abc44bb5c9ce4070ba76d",
+                    "expiration_date": "2022-10-12",
+                    "amount": 8.87,
+                    "redeemable_concept_code": "21"
+                }
+            ]
+        }
+    ],
+    "digital_wallet": {
+        "wallet_id": "111488888180522B371B35CF",
+        "wallet_balance": 797.45,
+        "currency": "AED",
+        "version": 75,
+        "references": [
+            {
+                "wallet_reference_id": "121218888822092811041058",
+                "expiration_date": "2023-09-05",
+                "amount": 0.25
+            },
+            {
+                "wallet_reference_id": "12168888822091320121083",
+                "expiration_date": "2023-09-05",
+                "amount": 140.67
+            },
+            {
+                "wallet_reference_id": "73bd92f471164292a9c4cce9f",
+                "expiration_date": "2023-09-26",
+                "amount": 32.59
+            },
+            {
+                "wallet_reference_id": "201cb2b886ab46aca433cddc6",
+                "expiration_date": "2023-09-27",
+                "amount": 294.00
+            },
+            {
+                "wallet_reference_id": "989684315cee4d568d117341a",
+                "expiration_date": "2023-09-28",
+                "amount": 59.00
+            },
+            {
+                "wallet_reference_id": "ed58848133f44e0099af82943",
+                "expiration_date": "2023-09-28",
+                "amount": 128.00
+            },
+            {
+                "wallet_reference_id": "0ecd972d50584e4d8172104c2",
+                "expiration_date": "2023-09-28",
+                "amount": 28.71
+            }
+        ]
+    },
+    "total_balance": 872.13,
+    "base_currency": "AED"
+}

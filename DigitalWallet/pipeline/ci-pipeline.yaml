@@ -1,0 +1,25 @@
+parameters:
+- name: veracode
+  displayName: 'Scan With VeraCode'
+  type: boolean
+  default: true
+
+pool:
+  vmImage: "ubuntu-latest"
+variables:
+  - template: variables.yaml
+  - template: vars/java-spring-boot/ci-vars.yaml@devops
+    parameters:
+      repoName: "digital-wallet"
+      projectName: "digital-wallet"
+
+resources:
+  repositories:
+    - repository: devops
+      type: git
+      name: AzureDevOps-Shared-Library/azuredevops-shared-library
+
+steps:
+  - template: java-spring-boot/ci-steps.yaml@devops
+    parameters:
+      veracode: ${{ parameters.veracode }}

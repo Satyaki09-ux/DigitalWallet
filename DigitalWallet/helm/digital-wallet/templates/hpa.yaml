@@ -1,0 +1,25 @@
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Values.app.name }}-hpa
+  namespace: {{ .Values.k8s.namespace }}
+spec:
+  maxReplicas: {{ .Values.replica.maxcount }}
+  minReplicas: {{ .Values.replica.mincount }}
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ .Values.app.name }}
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: AverageValue
+          averageValue: {{ .Values.cpu.target }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: AverageValue
+          averageValue: {{ .Values.memory.target }}

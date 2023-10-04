@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.app.name }}
+  labels:
+    app: {{ .Values.app.name }}
+    group: {{ .Values.app.name }}
+    obs: appd
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name }}
+  template:
+    metadata:
+      annotations:
+          container.apparmor.security.beta.kubernetes.io/{{ .Values.app.name }}: runtime/default
+      labels:
+        app: {{ .Values.app.name }}
+        group: {{ .Values.app.name }}
+        obs: appd
+    spec:
+      securityContext:
+        fsGroup: 2000
+        runAsNonRoot: true
+        runAsUser: 1000
+      imagePullSecrets:
+        - name: acr-auth
+      containers:
+        - name: {{ .Values.app.name }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+          resources:
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+          volumeMounts:
+          - name: log-volume
+            mountPath: /opt/apps/sahla/sell/{{ .Values.app.name }}/logs
+          - name: secrets-sell-inline
+            mountPath: "/mnt/secrets-store"
+            readOnly: true
+          - name: config-volume
+            mountPath: /script/start.sh
+            subPath: start.sh
+
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/info
+              port: {{ .Values.metrics.port }}
+              scheme: "HTTP"
+              httpHeaders:
+              - name: Authorization
+                value: "Basic ZW50aXR5Omxvb2t1cA=="
+              - name: cache-control
+                value: "no-cache"   
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+            initialDelaySeconds: 60
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/info
+              port: {{ .Values.metrics.port }}
+              scheme: "HTTP"
+              httpHeaders:
+              - name: Authorization
+                value: "Basic ZW50aXR5Omxvb2t1cA=="
+              - name: cache-control
+                value: "no-cache"   
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+            initialDelaySeconds: 300
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sleep", "15"]
+      terminationGracePeriodSeconds: 60
+
+      volumes:
+      - name: log-volume
+        persistentVolumeClaim:
+          claimName: {{ .Values.pvc.name }}
+      - name: config-volume
+        configMap:
+          name: {{ .Values.app.name }}-configmap
+          defaultMode: 0755
+      - name: secrets-sell-inline
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: {{ .Values.ScpName }}
+          nodePublishSecretRef:
+            name: secrets-sell-creds
+      restartPolicy: Always
